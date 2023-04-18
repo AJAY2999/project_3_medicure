@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: medicure-deployment
+  labels:
+    app: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+       containers:
+         - name: medicure
+           image: nagaraju18/medicure_health_care:latest
+           ports:
+             - containerPort: 8082
+               name: http-web-app-01
