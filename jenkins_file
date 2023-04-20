@@ -1,0 +1,64 @@
+pipeline {
+agent any 
+tools {
+maven 'MAVEN'
+}
+
+stages {
+    stage("Git Checkout"){
+        steps{
+            git 'https://github.com/nagraj18/project-03-Medicure-healthcare-.git'
+             }
+         }
+    stage('maven build') {
+        steps {
+                sh "mvn install package"
+            }
+        }
+    stage('Publish HTML Report'){
+        steps{
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '/var/lib/jenkins/workspace/Medicure_health_care/target/surefire-reports', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+        }
+    } 
+    stage('Docker build image') {
+              steps {
+                  
+                  sh ' docker system prune -af '
+                  sh ' docker build -t nagaraju18/medicure_health_care:latest . '
+                }
+            }
+    stage('Docker login and push') {
+              steps {
+                  withCredentials([string(credentialsId: 'docker_secret', variable: 'docker')]) {
+                  sh ' docker login -u nagaraju18 -p ${docker} '
+                  sh ' docker push nagaraju18/medicure_health_care:latest '
+                  }
+              }
+        }
+        stage (' setting up terraform '){
+            steps{
+                dir('terraform_files') {
+                sh 'terraform init'
+                sh 'terraform validate'
+                sh 'terraform apply --auto-approve'
+                }
+            }
+        }  
+       stage('deploy to application to kubernetes'){
+    steps{
+        sh ' chmod 600 ./terraform_files/awsmobakey.pem'    
+        sh ' scp -o StrictHostKeyChecking=no -i ./terraform_files/awsmobakey.pem medicure_deployment.yml ubuntu@65.2.3.21:/home/ubuntu/'
+        sh ' scp -o StrictHostKeyChecking=no -i ./terraform_files/awsmobakey.pem medicure_service.yml ubuntu@65.2.3.21:/home/ubuntu/'
+    script{
+        try{
+            sh 'ssh -i ./terraform_files/awsmobakey.pem ubuntu@65.2.3.21 kubectl apply -f .'
+            }catch(error)
+    {
+        sh 'ssh -i ./terraform_files/awsmobakey.pem ubuntu@65.2.3.21kubectl apply -f .'
+        }
+    }
+    }
+        }
+}
+            
+      } 
