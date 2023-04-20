@@ -8,11 +8,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: app
+      app: front-end
   template:
     metadata:
       labels:
-        app: app
+        app: front-end
     spec:
        containers:
          - name: medicure
