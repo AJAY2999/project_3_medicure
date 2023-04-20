@@ -51,10 +51,10 @@ stages {
         sh ' scp -o StrictHostKeyChecking=no -i ./terraform_files/awsajay2999.pem medicure_service.yml ubuntu@172.31.14.242:/home/ubuntu/'
     script{
         try{
-            sh 'ssh -i ./terraform_files/awsajay2999.pem ubuntu@172.31.14.242:kubectl apply -f .'
+            sh 'ssh -i ./terraform_files/awsajay2999.pem ubuntu@172.31.14.242 kubectl apply -f .'
             }catch(error)
     {
-        sh 'ssh -i ./terraform_files/awsajay2999.pem ubuntu@172.31.14.242:kubectl apply -f .'
+        sh 'ssh -i ./terraform_files/awsajay2999.pem ubuntu@172.31.14.242 kubectl apply -f .'
         }
     }
     }
