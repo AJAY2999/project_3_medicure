@@ -46,15 +46,15 @@ stages {
         }  
        stage('deploy to application to kubernetes'){
     steps{
-        sh ' chmod 600 ./terraform_files/awsmobakey.pem'    
-        sh ' scp -o StrictHostKeyChecking=no -i ./terraform_files/awsmobakey.pem medicure_deployment.yml ubuntu@65.2.3.21:/home/ubuntu/'
-        sh ' scp -o StrictHostKeyChecking=no -i ./terraform_files/awsmobakey.pem medicure_service.yml ubuntu@65.2.3.21:/home/ubuntu/'
+        sh ' chmod 600 ./terraform_files/awsajay2999.pem'    
+        sh ' scp -o StrictHostKeyChecking=no -i ./terraform_files/awsajay2999.pem medicure_deployment.yml ubuntu@172.31.14.242:/home/ubuntu/'
+        sh ' scp -o StrictHostKeyChecking=no -i ./terraform_files/awsajay2999.pem medicure_service.yml ubuntu@172.31.14.242:/home/ubuntu/'
     script{
         try{
-            sh 'ssh -i ./terraform_files/awsmobakey.pem ubuntu@65.2.3.21 kubectl apply -f .'
+            sh 'ssh -i ./terraform_files/awsajay2999.pem ubuntu@172.31.14.242:kubectl apply -f .'
             }catch(error)
     {
-        sh 'ssh -i ./terraform_files/awsmobakey.pem ubuntu@65.2.3.21kubectl apply -f .'
+        sh 'ssh -i ./terraform_files/awsajay2999.pem ubuntu@172.31.14.242:kubectl apply -f .'
         }
     }
     }
