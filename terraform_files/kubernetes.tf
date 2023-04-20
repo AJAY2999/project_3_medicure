@@ -2,18 +2,18 @@ provider "aws" {
  region = "ap-south-1"
 }
 resource "aws_instance" "k8s_server" {
- ami = "ami-03a933af70fa97ad2"
+ ami = "ami-0d979355d03fa2522"
  instance_type = "t2.medium"
 
 
- vpc_security_group_ids = ["sg-08290b52fa64c3be6"]
- key_name = "awsmobakey"
+ vpc_security_group_ids = ["sg-04463616331ddcb75"]
+ key_name = "awsajay2999"
    root_block_device {
       volume_size = 20
       volume_type = "gp2"
     }
    tags = {
-        name = "k8s-server"
+        name = "kunbernetes-server"
     }
  provisioner "remote-exec" {
  inline = [
@@ -33,7 +33,7 @@ resource "aws_instance" "k8s_server" {
  type = "ssh"
  host = self.public_ip
  user = "ubuntu"
- private_key = file("./awsmobakey.pem")
+ private_key = file("./awsajay2999.pem")
  }
  }
 }
