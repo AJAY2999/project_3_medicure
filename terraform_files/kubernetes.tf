@@ -2,7 +2,7 @@ provider "aws" {
  region = "ap-northeast-1"
 }
 resource "aws_instance" "Demo" {
- ami = "ami-0d979355d03fa2522"
+ ami = "ami-0d0c6a887ce442603"
  instance_type = "t2.medium"
 
 
