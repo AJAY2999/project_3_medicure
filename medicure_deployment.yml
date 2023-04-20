@@ -18,5 +18,5 @@ spec:
          - name: medicure
            image: ajaymaverick/project3medicure:latest
            ports:
-             - containerPort: 8080
+             - containerPort: 8082
                name: http-web-app-01
